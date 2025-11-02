@@ -1,0 +1,1758 @@
+import React, { useState, useEffect } from 'react';
+import { BookOpen, Users, Trophy, Flame, Clock, Award, Target, Video, Globe, Gamepad2, Dog, AlertCircle, Shield, Volume2, MessageCircle, ShoppingCart, Phone, Wifi, WifiOff, CreditCard, UserPlus, Heart, Utensils, Star, Zap, Gift, Home, Menu, X, Play, Pause } from 'lucide-react';
+
+export default function NPMCPlatform() {
+  const [page, setPage] = useState('landing');
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [points, setPoints] = useState(0);
+  const [selectedGame, setSelectedGame] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedPet, setSelectedPet] = useState(null);
+  const [studyTime, setStudyTime] = useState(0);
+  const [isStudying, setIsStudying] = useState(false);
+  const [isMonitoring, setIsMonitoring] = useState(false);
+  const [petLevel, setPetLevel] = useState(1);
+  const [petHunger, setPetHunger] = useState(100);
+  const [petHappiness, setPetHappiness] = useState(100);
+  const [streak, setStreak] = useState(0);
+  const [isOnline, setIsOnline] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
+  const [username, setUsername] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    let interval;
+    if (isStudying && isMonitoring) {
+      interval = setInterval(() => {
+        setStudyTime(prev => prev + 1);
+        if (studyTime > 0 && studyTime % 60 === 0) {
+          setPoints(prev => prev + 10);
+        }
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [isStudying, isMonitoring, studyTime]);
+
+  const formatTime = (seconds) => {
+    const hrs = Math.floor(seconds / 3600);
+    const mins = Math.floor((seconds % 3600) / 60);
+    const secs = seconds % 60;
+    return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  // Landing Page
+  if (page === 'landing') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900">
+        {/* 導航列 */}
+        <nav className="bg-black/30 backdrop-blur-lg fixed w-full z-50">
+          <div className="max-w-7xl mx-auto px-4 py-4">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center space-x-2">
+                <BookOpen className="w-8 h-8 text-purple-400" />
+                <span className="text-2xl font-bold text-white">NPMC</span>
+              </div>
+              <div className="hidden md:flex space-x-6">
+                <a href="#features" className="text-white hover:text-purple-300 transition">功能介紹</a>
+                <a href="#games" className="text-white hover:text-purple-300 transition">遊戲世界</a>
+                <a href="#pricing" className="text-white hover:text-purple-300 transition">方案</a>
+                <a href="#about" className="text-white hover:text-purple-300 transition">關於我們</a>
+              </div>
+              <button onClick={() => setPage('login')} className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-6 py-2 rounded-full font-bold hover:shadow-lg transition">
+                開始使用
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        {/* Hero Section */}
+        <div className="pt-32 pb-20 px-4">
+          <div className="max-w-6xl mx-auto text-center">
+            <div className="text-6xl md:text-8xl mb-6 animate-bounce">🏛️</div>
+            <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
+              讓學習不再孤單
+            </h1>
+            <p className="text-xl md:text-2xl text-purple-200 mb-8 max-w-3xl mx-auto">
+              NPMC 國政模擬中心 - 結合遊戲化學習、真實監控、社交互動的全新教育平台
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button onClick={() => setPage('login')} className="bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-8 py-4 rounded-full text-xl font-bold hover:shadow-2xl transition transform hover:scale-105">
+                立即開始 🚀
+              </button>
+              <button onClick={() => setPage('demo')} className="bg-white/10 backdrop-blur text-white px-8 py-4 rounded-full text-xl font-bold border-2 border-white/30 hover:bg-white/20 transition">
+                觀看Demo
+              </button>
+            </div>
+
+            {/* 統計數據 */}
+            <div className="grid grid-cols-3 gap-6 mt-16 max-w-4xl mx-auto">
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                <div className="text-4xl font-bold text-yellow-400">10K+</div>
+                <div className="text-white mt-2">活躍用戶</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                <div className="text-4xl font-bold text-green-400">50K+</div>
+                <div className="text-white mt-2">學習時數</div>
+              </div>
+              <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6">
+                <div className="text-4xl font-bold text-pink-400">95%</div>
+                <div className="text-white mt-2">滿意度</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Features Section */}
+        <div id="features" className="bg-white py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
+              為什麼選擇 NPMC?
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                { icon: '📚', title: '真實監控讀書', desc: '視訊+語音監控,確保專注學習' },
+                { icon: '🎮', title: '多元遊戲世界', desc: '3D戰略、寵物養成等豐富玩法' },
+                { icon: '👥', title: '社交互動系統', desc: '好友、聊天、組隊讀書' },
+                { icon: '🏆', title: '積分獎勵機制', desc: '讀書賺積分,兌換真實獎品' },
+              ].map((item, i) => (
+                <div key={i} className="bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl p-6 hover:shadow-xl transition transform hover:-translate-y-2">
+                  <div className="text-5xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-bold mb-2 text-gray-800">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Games Section */}
+        <div id="games" className="bg-gradient-to-br from-indigo-900 to-purple-900 py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-white">
+              探索遊戲世界
+            </h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              {[
+                { icon: '🌍', title: '全球國際戰爭', desc: '選擇國家,制定策略,征服世界!', color: 'from-red-500 to-orange-500' },
+                { icon: '🐾', title: '動物夥伴養成', desc: '養育專屬寵物,探索大草原!', color: 'from-green-500 to-emerald-500' },
+                { icon: '⏰', title: '懶人鬧鐘挑戰', desc: '完成任務,培養早起好習慣!', color: 'from-blue-500 to-cyan-500' },
+                { icon: '📚', title: '專注讀書模式', desc: '視訊監督,讀書賺積分!', color: 'from-purple-500 to-pink-500' },
+              ].map((game, i) => (
+                <div key={i} className={`bg-gradient-to-br ${game.color} rounded-3xl p-8 text-white hover:shadow-2xl transition transform hover:scale-105`}>
+                  <div className="text-6xl mb-4">{game.icon}</div>
+                  <h3 className="text-2xl font-bold mb-2">{game.title}</h3>
+                  <p className="text-white/80 mb-4">{game.desc}</p>
+                  <button className="bg-white/20 backdrop-blur px-6 py-2 rounded-full font-bold hover:bg-white/30 transition">
+                    了解更多 →
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Pricing Section */}
+        <div id="pricing" className="bg-white py-20 px-4">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-16 text-gray-800">
+              選擇你的方案
+            </h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              {[
+                { name: '免費版', price: 'NT$0', period: '永久', features: ['基礎讀書計時', '簡易遊戲模式', '100積分上限', '基本社交功能'], icon: '🆓', color: 'gray' },
+                { name: '一杯咖啡', price: 'NT$50', period: '7天', features: ['無限積分', '所有遊戲解鎖', '無廣告體驗', 'VIP專屬裝備', '優先客服'], icon: '☕', color: 'yellow', popular: true },
+                { name: '一瓶麥香', price: 'NT$30', period: '3天', features: ['體驗VIP功能', '積分加成+50%', '專屬稱號', '限時嘗鮮'], icon: '🥤', color: 'orange' },
+              ].map((plan, i) => (
+                <div key={i} className={`rounded-3xl p-8 relative ${plan.popular ? 'bg-gradient-to-br from-yellow-400 to-orange-500 text-white transform scale-105 shadow-2xl' : 'bg-gray-50 text-gray-800'}`}>
+                  {plan.popular && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-red-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                      最受歡迎
+                    </div>
+                  )}
+                  <div className="text-5xl mb-4 text-center">{plan.icon}</div>
+                  <h3 className="text-2xl font-bold text-center mb-2">{plan.name}</h3>
+                  <div className="text-center mb-6">
+                    <span className="text-4xl font-bold">{plan.price}</span>
+                    <span className="text-sm ml-2">/ {plan.period}</span>
+                  </div>
+                  <ul className="space-y-3 mb-8">
+                    {plan.features.map((feature, j) => (
+                      <li key={j} className="flex items-center">
+                        <span className="mr-2">✓</span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <button className={`w-full py-3 rounded-xl font-bold transition ${plan.popular ? 'bg-white text-orange-500 hover:bg-gray-100' : 'bg-purple-500 text-white hover:bg-purple-600'}`}>
+                    選擇方案
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* About Section */}
+        <div id="about" className="bg-gradient-to-br from-purple-900 to-indigo-900 py-20 px-4">
+          <div className="max-w-4xl mx-auto text-white">
+            <h2 className="text-4xl md:text-5xl font-bold text-center mb-12">關於 NPMC</h2>
+            <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 mb-8">
+              <h3 className="text-2xl font-bold mb-4">我們的理念</h3>
+              <p className="text-lg leading-relaxed text-purple-100">
+                在2024年,一群對教育充滿熱情的年輕人發現:傳統學習方式太孤獨、太無聊。於是,我們創立了 NPMC (National Politics Mock Center) 國政模擬中心。
+                我們相信,學習應該是有趣的、社交的、有成就感的。透過遊戲化設計、真實監控系統、豐富的社交功能,讓每個人都能找到學習的動力與樂趣!
+              </p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-6 text-center">
+              <div>
+                <div className="text-4xl mb-2">🎯</div>
+                <div className="font-bold text-xl mb-2">使命</div>
+                <div className="text-purple-200">打造最有趣的學習平台</div>
+              </div>
+              <div>
+                <div className="text-4xl mb-2">💡</div>
+                <div className="font-bold text-xl mb-2">願景</div>
+                <div className="text-purple-200">讓全球學習者相互連結</div>
+              </div>
+              <div>
+                <div className="text-4xl mb-2">❤️</div>
+                <div className="font-bold text-xl mb-2">價值</div>
+                <div className="text-purple-200">陪伴、成長、突破</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <footer className="bg-black text-white py-12 px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="grid md:grid-cols-4 gap-8 mb-8">
+              <div>
+                <h4 className="font-bold text-xl mb-4">NPMC</h4>
+                <p className="text-gray-400">讓學習不再孤單</p>
+              </div>
+              <div>
+                <h4 className="font-bold mb-4">產品</h4>
+                <div className="space-y-2 text-gray-400">
+                  <div>讀書模式</div>
+                  <div>遊戲世界</div>
+                  <div>社交系統</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold mb-4">支援</h4>
+                <div className="space-y-2 text-gray-400">
+                  <div>使用教學</div>
+                  <div>常見問題</div>
+                  <div>聯繫我們</div>
+                </div>
+              </div>
+              <div>
+                <h4 className="font-bold mb-4">社群</h4>
+                <div className="space-y-2 text-gray-400">
+                  <div>📘 Facebook</div>
+                  <div>📷 Instagram</div>
+                  <div>💬 Discord</div>
+                  <div>🎥 YouTube</div>
+                </div>
+              </div>
+            </div>
+            <div className="border-t border-gray-800 pt-8 text-center text-gray-400">
+              <p>© 2025 NPMC 國政模擬中心. All rights reserved.</p>
+              <div className="mt-2 space-x-4">
+                <span className="hover:text-white cursor-pointer">使用條款</span>
+                <span className="hover:text-white cursor-pointer">隱私政策</span>
+                <span className="hover:text-white cursor-pointer">免責聲明</span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    );
+  }
+
+  // Login Page
+  if (page === 'login') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 to-indigo-900 flex items-center justify-center px-4">
+        <div className="bg-white rounded-3xl p-8 max-w-md w-full">
+          <div className="text-center mb-8">
+            <div className="text-6xl mb-4">🏛️</div>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">歡迎回來!</h2>
+            <p className="text-gray-600">登入開始你的學習旅程</p>
+          </div>
+          <div className="space-y-4">
+            <input
+              type="text"
+              placeholder="使用者名稱"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 outline-none"
+            />
+            <input
+              type="password"
+              placeholder="密碼"
+              className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-purple-500 outline-none"
+            />
+            <button
+              onClick={() => {
+                if (username) {
+                  setIsLoggedIn(true);
+                  setPage('story');
+                }
+              }}
+              className="w-full py-3 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl font-bold hover:shadow-lg transition"
+            >
+              登入
+            </button>
+            <button className="w-full py-3 border-2 border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50 transition">
+              註冊新帳號
+            </button>
+          </div>
+          <div className="mt-6 text-center">
+            <button onClick={() => setPage('landing')} className="text-purple-600 hover:underline">
+              ← 返回首頁
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // 其他頁面保持原有邏輯...
+  // Story, Rewards, Game Select等頁面代碼
+  
+  return (
+    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <div className="text-center">
+        <h1 className="text-3xl font-bold mb-4">頁面開發中...</h1>
+        <button onClick={() => setPage('landing')} className="px-6 py-3 bg-purple-600 text-white rounded-lg">
+          返回首頁
+        </button>
+      </div>
+    </div>
+  );
+}
+{
+  "name": "NPMC 國政模擬中心",
+  "short_name": "NPMC",
+  "description": "遊戲化學習平台 - 讓學習不再孤單",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#7c3aed",
+  "theme_color": "#7c3aed",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icons/icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "categories": ["education", "productivity", "social"],
+  "screenshots": [
+    {
+      "src": "/screenshots/home.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    },
+    {
+      "src": "/screenshots/study.png",
+      "sizes": "540x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "開始讀書",
+      "short_name": "讀書",
+      "description": "立即開始讀書模式",
+      "url": "/?action=study",
+      "icons": [{ "src": "/icons/shortcut-study.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "遊戲世界",
+      "short_name": "遊戲",
+      "description": "進入遊戲世界",
+      "url": "/?action=games",
+      "icons": [{ "src": "/icons/shortcut-games.png", "sizes": "96x96" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false,
+  "lang": "zh-TW",
+  "dir": "ltr"
+}// Service Worker for NPMC PWA
+// 版本號 - 每次更新時改這個數字
+const CACHE_VERSION = 'npmc-v1.0.0';
+
+// 需要快取的文件列表
+const CACHE_FILES = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/icons/icon-192.png',
+  '/icons/icon-512.png',
+  'https://cdn.tailwindcss.com',
+];
+
+// 安裝 Service Worker
+self.addEventListener('install', (event) => {
+  console.log('[SW] 安裝中...');
+  
+  event.waitUntil(
+    caches.open(CACHE_VERSION)
+      .then((cache) => {
+        console.log('[SW] 快取文件');
+        return cache.addAll(CACHE_FILES);
+      })
+      .then(() => {
+        console.log('[SW] 安裝完成');
+        return self.skipWaiting(); // 立即啟用新的 SW
+      })
+  );
+});
+
+// 啟用 Service Worker
+self.addEventListener('activate', (event) => {
+  console.log('[SW] 啟用中...');
+  
+  event.waitUntil(
+    caches.keys()
+      .then((cacheNames) => {
+        // 刪除舊版本的快取
+        return Promise.all(
+          cacheNames.map((cacheName) => {
+            if (cacheName !== CACHE_VERSION) {
+              console.log('[SW] 刪除舊快取:', cacheName);
+              return caches.delete(cacheName);
+            }
+          })
+        );
+      })
+      .then(() => {
+        console.log('[SW] 啟用完成');
+        return self.clients.claim(); // 立即控制所有頁面
+      })
+  );
+});
+
+// 攔截網路請求
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
+  const url = new URL(request.url);
+
+  // 只處理同源請求
+  if (url.origin !== location.origin && !url.href.includes('cdn.tailwindcss.com')) {
+    return;
+  }
+
+  event.respondWith(
+    // 策略: Cache First (優先使用快取)
+    caches.match(request)
+      .then((cachedResponse) => {
+        if (cachedResponse) {
+          console.log('[SW] 從快取載入:', request.url);
+          return cachedResponse;
+        }
+
+        // 如果快取中沒有,從網路獲取
+        console.log('[SW] 從網路獲取:', request.url);
+        return fetch(request)
+          .then((networkResponse) => {
+            // 如果獲取成功,將回應加入快取
+            if (networkResponse && networkResponse.status === 200) {
+              const responseClone = networkResponse.clone();
+              caches.open(CACHE_VERSION)
+                .then((cache) => {
+                  cache.put(request, responseClone);
+                });
+            }
+            return networkResponse;
+          })
+          .catch((error) => {
+            console.error('[SW] 獲取失敗:', request.url, error);
+            
+            // 如果是導航請求(頁面)且失敗,返回離線頁面
+            if (request.mode === 'navigate') {
+              return caches.match('/');
+            }
+            
+            throw error;
+          });
+      })
+  );
+});
+
+// 處理推播通知
+self.addEventListener('push', (event) => {
+  console.log('[SW] 收到推播通知');
+  
+  const options = {
+    body: event.data ? event.data.text() : '你有新的通知!',
+    icon: '/icons/icon-192.png',
+    badge: '/icons/badge-72.png',
+    vibrate: [200, 100, 200],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    },
+    actions: [
+      {
+        action: 'explore',
+        title: '查看',
+        icon: '/icons/check.png'
+      },
+      {
+        action: 'close',
+        title: '關閉',
+        icon: '/icons/close.png'
+      }
+    ]
+  };
+
+  event.waitUntil(
+    self.registration.showNotification('NPMC通知', options)
+  );
+});
+
+// 處理通知點擊
+self.addEventListener('notificationclick', (event) => {
+  console.log('[SW] 通知被點擊:', event.action);
+  
+  event.notification.close();
+
+  if (event.action === 'explore') {
+    // 打開APP
+    event.waitUntil(
+      clients.openWindow('/')
+    );
+  }
+});
+
+// 背景同步(當網路恢復時)
+self.addEventListener('sync', (event) => {
+  console.log('[SW] 背景同步:', event.tag);
+  
+  if (event.tag === 'sync-study-data') {
+    event.waitUntil(syncStudyData());
+  }
+});
+
+// 同步讀書數據
+async function syncStudyData() {
+  try {
+    const cache = await caches.open('npmc-data');
+    const pendingData = await cache.match('/pending-sync');
+    
+    if (pendingData) {
+      const data = await pendingData.json();
+      // 發送到服務器
+      await fetch('/api/sync', {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      
+      // 同步成功後刪除暫存
+      await cache.delete('/pending-sync');
+      console.log('[SW] 數據同步成功');
+    }
+  } catch (error) {
+    console.error('[SW] 同步失敗:', error);
+    throw error;
+  }
+}
+
+// 定期清理過期快取
+self.addEventListener('message', (event) => {
+  if (event.data.action === 'skipWaiting') {
+    self.skipWaiting();
+  }
+  
+  if (event.data.action === 'clearCache') {
+    event.waitUntil(
+      caches.keys().then((cacheNames) => {
+        return Promise.all(
+          cacheNames.map((cacheName) => caches.delete(cacheName))
+        );
+      })
+    );
+  }
+});
+npmc-app/
+├── index.html          (主程式)
+├── manifest.json       (APP設定)
+├── sw.js              (離線支援)
+└── icons/             (圖示資料夾)
+    ├── icon-192.png
+    └── icon-512.png1. 點「創建設計」
+   2. 輸入「512 x 512」
+   3. 點「自訂尺寸」背景色: 選紫色 (#7c3aed)
+   加入元素: 
+   - 點左側「元素」
+   - 搜尋「building」或「column」
+   - 找一個像🏛️的圖示
+   - 調整大小到適中
+   
+   加入文字:
+   - 點「文字」
+   - 輸入「NPMC」
+   - 字體選「粗體」
+   - 顏色選白色
+   - 置中對齊1. 點右上角「分享」
+   2. 選「下載」
+   3. 格式選「PNG」
+   4. 點「下載」
+   5. 檔名改成: icon-512.png1. 回到設計
+   2. 點「調整大小」
+   3. 改成「192 x 192」
+   4. 下載,命名: icon-192.png1. 用任何512x512的圖片
+2. 可以先用🏛️ emojinpmc-app/
+└── icons/
+    ├── icon-192.png  ← 放這裡
+    └── icon-512.png  ← 放這裡1. 前往: https://nodejs.org
+   2. 下載「LTS版本」
+   3. 安裝(一直按下一步)
+按 Win+R
+   輸入: cmd
+按 Command+Space
+   輸入: terminal
+   按Enter
+npm install -g vercel
+# Windows
+   cd Desktop\npmc-app
+   
+   # Mac
+   cd ~/Desktop/npmc-app
+vercel
+? Set up and deploy? → 按 Y
+   ? Which scope? → 選你的帳號
+   ? Link to existing project? → 按 N
+   ? What's your project's name? → 輸入: npmc-app
+   ? In which directory is your code? → 按 Enter
+   ? Want to override the settings? → 按 N
+✅ 會給你一個網址,像:
+   https://npmc-app.vercel.app
+   
+   這就是你的APP網址!
+在Vercel首頁點「新增」→「專案」
+選擇「Import Git Repository」
+
+如果你沒用Git，選「Import from template」
+然後手動上傳文件
+
+
+拖曳你的 npmc-app 資料夾
+點「部署」
+等待1-2分鐘
+完成！會給你網址
+測試安裝
+4.1 在手機上測試
+Android手機：
+
+打開Chrome瀏覽器
+前往你的網址 （例如： npmc-app.vercel.app）
+「加到主畫面」等待2-3秒，會自動彈出安裝提示：
+1. 點Chrome右上角「⋮」
+2. 選「加到主畫面」
+3. 點「安裝」
+iPhone/iPad：
+
+打開Safari瀏覽器 （一定要用Safari！
+前往你的網址
+點下方的「分享」按鈕 （方框向上箭頭）
+滑到下面,找「加入主畫面」
+點「加入」
+完成！桌面上就有APP了！
+
+4.2 在電腦上測試
+Chrome瀏覽器：
+
+前往你的網址
+網址列右側會出現「⊕」圖示
+點它,選「安裝」
+完成!會開啟獨立APP視窗
+
+Edge瀏覽器：
+
+跟Chrome一樣
+5.1 檢查清單
+開啟你的APP，確認：
+
+ 可以打開 - 沒有錯誤訊息
+ 顯示正常 - 所有頁面都能看到
+ 底部導航 - 可以切換頁面
+ 圖示顯示 - APP圖示正確
+ 離線測試 - 關掉網路仍可打開(可能需要先開過一次)
+ 全螢幕 - 沒有瀏覽器框
+使用Lighthouse （Chrome內建）：
+
+在Chrome打開你的網址
+按 F12 （開發者工具）
+點「Lighthouse」標籤
+選擇「Mobile」和「Progressive Web App」
+點「產生報告」
+等待1分鐘
+目標分數:
+
+性能：>80
+PWA：>90
+常見問題排除
+問題1: 圖示不顯示
+解決:
+1. 確認 icons/ 資料夾有圖片
+2. 檔名要完全正確 (icon-192.png)
+3. 重新部署: vercel --prod
+問題2: 無法安裝
+解決:
+1. 確認使用HTTPS (Vercel自動有)
+2. 確認manifest.json格式正確
+3. 清除瀏覽器快取重試
+問題3: 離線不能用
+
+解決:
+1. 確認sw.js已上傳
+2. 先上線開一次APP
+3. 再關網路測試
+問題4： 在iPhone上不能安裝
+解決:
+1. 一定要用Safari!
+2. 不能用Chrome/Firefox
+3. iOS 11.3以上才支援
+分享你的APP！
+獲取分享連結
+你的APP網址就是分享連結！
+例如: https://npmc-app.vercel.app
+
+分享給朋友:
+"來試試我做的學習APP!"
+"網址: https://npmc-app.vercel.app"
+"可以安裝到手機桌面喔!"
+🎉 我做的學習APP上線了!
+
+NPMC 國政模擬中心
+✅ 監控讀書賺積分
+✅ 多種遊戲模式
+✅ 社交互動功能
+✅ 可安裝到手機
+
+立即體驗 👇
+[你的網址]
+
+#學習APP #讀書 #遊戲化學習
+後續更新
+如何更新APP內容？
+超簡單!3步驟:
+
+修改文件
+
+打開 index.html
+改你要改的內容
+儲存
+重新部署
+cd Desktop/npmc-app
+   vercel --prod
+完成!
+
+用戶下次打開自動更新
+不需要重新安裝
+更新Service Worker版本
+如果有重大更新:
+打開sw.js
+找到第3行:
+const CACHE_VERSION = 'npmc-v1.0.0';
+改成:
+const CACHE_VERSION = 'npmc-v1.0.1';
+重新部署
+監控數據
+查看訪問統計
+Vercel內建分析：
+
+登入 Vercel
+點你的專案
+點「分析」
+可以看到:
+每日訪問數
+使用者地區
+設備類型
+載入速度
+全部免費!
+  按Enter
+3. 截圖然後調整尺寸
+console.log('[SW] Service Worker 已載入');
+加入Google Analytics
+index.html<head>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+# 安裝Vercel CLI
+npm install -g vercel
+
+# 進入專案
+cd Desktop/npmc-app
+
+# 第一次部署
+vercel
+
+# 更新部署
+vercel --prod
+
+# 查看部署列表
+vercel ls
+
+# 移除專案
+vercel remove npmc-app
+最後更新： 2025-11-02 版本： v1.0 作者： Claude for NPMC Team
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NPMC APP圖示設計器</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .icon-preview { 
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-purple-100 to-pink-100 min-h-screen p-8">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-center mb-8 text-purple-900">
+      🎨 NPMC APP圖示設計器
+    </h1>
+
+    <!-- 設計區 -->
+    <div class="bg-white rounded-3xl shadow-2xl p-8 mb-8">
+      <h2 class="text-2xl font-bold mb-6">設計你的圖示</h2>
+      
+      <div class="grid md:grid-cols-2 gap-8">
+        <!-- 控制面板 -->
+        <div class="space-y-6">
+          <div>
+            <label class="block font-bold mb-2">背景顏色</label>
+            <div class="grid grid-cols-4 gap-3">
+              <button onclick="setColor('#7c3aed')" class="w-full h-12 rounded-lg bg-purple-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#ec4899')" class="w-full h-12 rounded-lg bg-pink-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#3b82f6')" class="w-full h-12 rounded-lg bg-blue-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#10b981')" class="w-full h-12 rounded-lg bg-green-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#f59e0b')" class="w-full h-12 rounded-lg bg-yellow-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#ef4444')" class="w-full h-12 rounded-lg bg-red-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#8b5cf6')" class="w-full h-12 rounded-lg bg-violet-600 border-4 border-transparent hover:border-gray-300"></button>
+              <button onclick="setColor('#06b6d4')" class="w-full h-12 rounded-lg bg-cyan-600 border-4 border-transparent hover:border-gray-300"></button>
+            </div>
+            <input type="color" id="customColor" class="w-full mt-3 h-12 rounded-lg" onchange="setColor(this.value)">
+          </div>
+
+          <div>
+            <label class="block font-bold mb-2">圖示樣式</label>
+            <div class="grid grid-cols-3 gap-3">
+              <button onclick="setIcon('🏛️')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">🏛️</button>
+              <button onclick="setIcon('📚')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">📚</button>
+              <button onclick="setIcon('🎓')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">🎓</button>
+              <button onclick="setIcon('⭐')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">⭐</button>
+              <button onclick="setIcon('🚀')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">🚀</button>
+              <button onclick="setIcon('💡')" class="p-4 text-4xl bg-gray-100 rounded-lg hover:bg-gray-200">💡</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block font-bold mb-2">文字</label>
+            <input 
+              type="text" 
+              id="textInput" 
+              value="NPMC" 
+              maxlength="6"
+              oninput="updateText(this.value)"
+              class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:border-purple-500 outline-none"
+            >
+          </div>
+
+          <div>
+            <label class="block font-bold mb-2">文字顏色</label>
+            <select id="textColor" onchange="updateTextColor(this.value)" class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg">
+              <option value="#ffffff">白色</option>
+              <option value="#000000">黑色</option>
+              <option value="#fbbf24">金色</option>
+              <option value="#f87171">紅色</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block font-bold mb-2">圓角程度</label>
+            <input 
+              type="range" 
+              min="0" 
+              max="50" 
+              value="20"
+              oninput="updateRadius(this.value)"
+              class="w-full"
+            >
+            <div class="text-sm text-gray-600 text-center mt-2" id="radiusValue">20%</div>
+          </div>
+        </div>
+
+        <!-- 預覽區 -->
+        <div class="space-y-6">
+          <div>
+            <label class="block font-bold mb-2 text-center">512x512 預覽</label>
+            <canvas id="canvas512" width="512" height="512" class="w-full rounded-2xl shadow-lg mx-auto icon-preview"></canvas>
+          </div>
+          <div>
+            <label class="block font-bold mb-2 text-center">192x192 預覽</label>
+            <canvas id="canvas192" width="192" height="192" class="w-48 rounded-xl shadow-lg mx-auto icon-preview"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- 下載按鈕 -->
+      <div class="mt-8 space-y-3">
+        <button onclick="downloadIcon(512)" class="w-full py-4 bg-gradient-to-r from-purple-600 to-pink-600 text-white rounded-xl font-bold text-lg hover:shadow-lg transition">
+          ⬇️ 下載 512x512 圖示
+        </button>
+        <button onclick="downloadIcon(192)" class="w-full py-4 bg-gradient-to-r from-blue-600 to-cyan-600 text-white rounded-xl font-bold text-lg hover:shadow-lg transition">
+          ⬇️ 下載 192x192 圖示
+        </button>
+        <button onclick="downloadAll()" class="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-bold text-lg hover:shadow-lg transition">
+          📦 下載全部尺寸 (ZIP)
+        </button>
+      </div>
+    </div>
+
+    <!-- 使用說明 -->
+    <div class="bg-white rounded-3xl shadow-xl p-8 mb-8">
+      <h2 class="text-2xl font-bold mb-4">📝 使用說明</h2>
+      <ol class="space-y-3 list-decimal list-inside">
+        <li class="text-gray-700">選擇你喜歡的<strong>背景顏色</strong></li>
+        <li class="text-gray-700">選擇一個<strong>圖示</strong> (或保持預設)</li>
+        <li class="text-gray-700">輸入你的<strong>APP名稱</strong> (建議4個字以內)</li>
+        <li class="text-gray-700">調整<strong>文字顏色</strong>和<strong>圓角</strong></li>
+        <li class="text-gray-700">滿意後點<strong>下載</strong>按鈕</li>
+        <li class="text-gray-700">把下載的圖片放到專案的 <code class="bg-gray-100 px-2 py-1 rounded">icons/</code> 資料夾</li>
+      </ol>
+    </div>
+
+    <!-- 預設範本 -->
+    <div class="bg-white rounded-3xl shadow-xl p-8">
+      <h2 class="text-2xl font-bold mb-6">🎨 快速範本</h2>
+      <div class="grid md:grid-cols-4 gap-4">
+        <button onclick="applyTemplate(1)" class="p-6 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl text-white font-bold hover:shadow-lg transition">
+          <div class="text-4xl mb-2">🏛️</div>
+          <div>經典紫色</div>
+        </button>
+        <button onclick="applyTemplate(2)" class="p-6 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-2xl text-white font-bold hover:shadow-lg transition">
+          <div class="text-4xl mb-2">📚</div>
+          <div>學習藍</div>
+        </button>
+        <button onclick="applyTemplate(3)" class="p-6 bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl text-white font-bold hover:shadow-lg transition">
+          <div class="text-4xl mb-2">🎓</div>
+          <div>成長綠</div>
+        </button>
+        <button onclick="applyTemplate(4)" class="p-6 bg-gradient-to-br from-orange-600 to-red-600 rounded-2xl text-white font-bold hover:shadow-lg transition">
+          <div class="text-4xl mb-2">🚀</div>
+          <div>活力橘</div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let config = {
+      bgColor: '#7c3aed',
+      icon: '🏛️',
+      text: 'NPMC',
+      textColor: '#ffffff',
+      radius: 20
+    };
+
+    function setColor(color) {
+      config.bgColor = color;
+      draw();
+    }
+
+    function setIcon(icon) {
+      config.icon = icon;
+      draw();
+    }
+
+    function updateText(text) {
+      config.text = text;
+      draw();
+    }
+
+    function updateTextColor(color) {
+      config.textColor = color;
+      draw();
+    }
+
+    function updateRadius(value) {
+      config.radius = value;
+      document.getElementById('radiusValue').textContent = value + '%';
+      draw();
+    }
+
+    function draw() {
+      [512, 192].forEach(size => {
+        const canvas = document.getElementById(`canvas${size}`);
+        const ctx = canvas.getContext('2d');
+        
+        // 清空畫布
+        ctx.clearRect(0, 0, size, size);
+        
+        // 畫圓角矩形背景
+        const radius = size * config.radius / 100;
+        ctx.fillStyle = config.bgColor;
+        ctx.beginPath();
+        ctx.roundRect(0, 0, size, size, radius);
+        ctx.fill();
+        
+        // 畫圖示
+        if (config.icon) {
+          ctx.font = `${size * 0.4}px Arial`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(config.icon, size / 2, size * 0.38);
+        }
+        
+        // 畫文字
+        if (config.text) {
+          ctx.font = `bold ${size * 0.18}px Arial`;
+          ctx.fillStyle = config.textColor;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(config.text, size / 2, size * 0.72);
+        }
+      });
+    }
+
+    function downloadIcon(size) {
+      const canvas = document.getElementById(`canvas${size}`);
+      const link = document.createElement('a');
+      link.download = `icon-${size}.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      
+      alert(`✅ 已下載 icon-${size}.png\n\n請把檔案放到專案的 icons/ 資料夾`);
+    }
+
+    async function downloadAll() {
+      alert('💡 提示:\n\n請分別點擊「下載 512x512」和「下載 192x192」按鈕\n\n這兩個是必須的圖示尺寸!');
+    }
+
+    function applyTemplate(id) {
+      const templates = {
+        1: { bgColor: '#7c3aed', icon: '🏛️', text: 'NPMC', textColor: '#ffffff', radius: 20 },
+        2: { bgColor: '#3b82f6', icon: '📚', text: 'NPMC', textColor: '#ffffff', radius: 25 },
+        3: { bgColor: '#10b981', icon: '🎓', text: 'NPMC', textColor: '#ffffff', radius: 30 },
+        4: { bgColor: '#f97316', icon: '🚀', text: 'NPMC', textColor: '#ffffff', radius: 15 }
+      };
+      
+      config = templates[id];
+      document.getElementById('textInput').value = config.text;
+      document.getElementById('textColor').value = config.textColor;
+      draw();
+    }
+
+    // 初始繪製
+    draw();
+  </script>
+</body>
+</html>
+# ✅ NPMC PWA 完整測試指南
+
+## 🎯 測試目標
+
+確保你的PWA在所有設備和情境下都能正常運作!
+
+---
+
+## 📱 測試裝置清單
+
+### 必測 (至少要測這些):
+- [ ] 你的手機 (Android或iPhone)
+- [ ] 你的電腦瀏覽器
+- [ ] 朋友的手機 (不同系統更好)
+
+### 建議測試:
+- [ ] Android手機 (Chrome)
+- [ ] iPhone (Safari)
+- [ ] iPad
+- [ ] Windows電腦
+- [ ] Mac電腦
+
+---
+
+## 🔍 第一階段:基礎功能測試
+
+### 1.1 網站載入測試
+
+**測試步驟:**
+```
+1. 打開瀏覽器
+2. 輸入你的網址
+3. 計時: 應在3秒內載入完成
+```
+
+**檢查項目:**
+- [ ] 網站能成功打開
+- [ ] 沒有404錯誤
+- [ ] 沒有白屏
+- [ ] 圖示正常顯示
+- [ ] 文字清晰可讀
+
+**預期結果:**
+```
+✅ 正常: 3秒內完整載入,所有內容可見
+❌ 異常: 超過5秒/有錯誤訊息/畫面破版
+```
+
+### 1.2 頁面導航測試
+
+**測試步驟:**
+```
+依序點擊底部導航的每個按鈕:
+首頁 → 遊戲 → 讀書 → 我的
+```
+
+**檢查項目:**
+- [ ] 每個頁面都能正常顯示
+- [ ] 切換流暢,無卡頓
+- [ ] 返回按鈕正常運作
+- [ ] 當前頁面高亮顯示
+
+**常見問題:**
+```
+問題: 點擊沒反應
+解決: 檢查代碼中的 onclick 事件
+
+問題: 頁面顯示錯誤
+解決: 檢查 renderXXX() 函數
+```
+
+### 1.3 互動功能測試
+
+**測試項目:**
+
+**A) 讀書計時器**
+```
+測試步驟:
+1. 進入「讀書」頁面
+2. 點「開始讀書」
+3. 觀察計時器是否開始跳動
+4. 等待1分鐘
+5. 檢查積分是否增加
+
+檢查:
+- [ ] 計時器正常運作
+- [ ] 暫停按鈕有效
+- [ ] 積分正確累積 (每分鐘+10)
+```
+
+**B) 寵物系統**
+```
+測試步驟:
+1. 進入「遊戲」→「動物夥伴」
+2. 選擇一個寵物
+3. 嘗試餵食和玩耍
+
+檢查:
+- [ ] 寵物正確顯示
+- [ ] 飽食度/快樂度會變化
+- [ ] 按鈕回饋正常
+```
+
+**C) 積分系統**
+```
+測試步驟:
+1. 記錄初始積分
+2. 讀書1分鐘
+3. 檢查積分增加
+4. 嘗試購買商品
+
+檢查:
+- [ ] 積分正確顯示
+- [ ] 積分能夠累積
+- [ ] 花費積分會扣除
+- [ ] 積分不足有提示
+```
+
+---
+
+## 📲 第二階段:PWA功能測試
+
+### 2.1 安裝測試
+
+**Android (Chrome):**
+```
+測試步驟:
+1. 打開Chrome
+2. 前往網站
+3. 等待「安裝」提示
+4. 點擊安裝
+5. 檢查桌面圖示
+
+檢查:
+- [ ] 出現安裝提示
+- [ ] 可以成功安裝
+- [ ] 桌面有圖示
+- [ ] 圖示正確顯示
+- [ ] 點擊可打開APP
+```
+
+**iPhone (Safari):**
+```
+測試步驟:
+1. 打開Safari
+2. 前往網站
+3. 點「分享」按鈕
+4. 選「加入主畫面」
+5. 檢查桌面圖示
+
+檢查:
+- [ ] 能找到「加入主畫面」選項
+- [ ] 安裝成功
+- [ ] 圖示正確
+- [ ] APP名稱正確
+- [ ] 打開是全螢幕(無瀏覽器框)
+```
+
+**電腦 (Chrome/Edge):**
+```
+測試步驟:
+1. 網址列會出現「⊕」圖示
+2. 點擊安裝
+3. 會開啟獨立視窗
+
+檢查:
+- [ ] 安裝圖示出現
+- [ ] 可以安裝
+- [ ] 獨立視窗運行
+- [ ] 工作列有圖示
+```
+
+### 2.2 離線功能測試
+
+**測試步驟:**
+```
+1. 先在有網路時打開APP一次(建立快取)
+2. 完全關閉APP
+3. 關閉手機網路 (飛航模式)
+4. 重新打開APP
+5. 測試基本功能
+```
+
+**檢查項目:**
+- [ ] APP能夠打開
+- [ ] 頁面能夠瀏覽
+- [ ] 圖示正常顯示
+- [ ] 本地功能(計時器等)仍可用
+
+**預期行為:**
+```
+✅ 能運作:
+- 查看已快取的頁面
+- 使用計時器
+- 查看本地數據
+
+❌ 不能運作:
+- 獲取最新數據
+- 同步積分到服務器
+- 社交功能
+```
+
+### 2.3 推播通知測試
+
+**測試步驟:**
+```
+1. 打開APP
+2. 允許通知權限
+3. 關閉APP
+4. 等待測試通知
+
+檢查:
+- [ ] 權限請求出現
+- [ ] 能夠允許權限
+- [ ] 通知能正常顯示
+- [ ] 點擊通知打開APP
+```
+
+**如何發送測試通知:**
+```javascript
+// 在瀏覽器console執行:
+navigator.serviceWorker.ready.then(registration => {
+  registration.showNotification('測試通知', {
+    body: '這是一個測試通知',
+    icon: '/icons/icon-192.png'
+  });
+});
+```
+
+---
+
+## 🎨 第三階段:UI/UX測試
+
+### 3.1 視覺檢查
+
+**各裝置檢查:**
+
+| 項目 | 手機直立 | 手機橫向 | 平板 | 電腦 |
+|------|---------|---------|------|------|
+| 文字大小適中 | [ ] | [ ] | [ ] | [ ] |
+| 按鈕容易點擊 | [ ] | [ ] | [ ] | [ ] |
+| 圖片不變形 | [ ] | [ ] | [ ] | [ ] |
+| 沒有跑版 | [ ] | [ ] | [ ] | [ ] |
+| 顏色對比足夠 | [ ] | [ ] | [ ] | [ ] |
+
+**問題排查:**
+```
+文字太小 → 增加font-size
+按鈕太小 → 改成至少44x44px
+圖片變形 → 使用object-fit: cover
+跑版 → 檢查CSS overflow
+```
+
+### 3.2 互動體驗
+
+**測試項目:**
+
+**觸控反饋:**
+```
+檢查:
+- [ ] 按鈕按下有視覺回饋
+- [ ] 點擊範圍夠大(不會誤觸)
+- [ ] 沒有延遲(小於100ms)
+- [ ] 滑動流暢
+```
+
+**動畫效果:**
+```
+檢查:
+- [ ] 頁面切換有動畫
+- [ ] 動畫不卡頓
+- [ ] 時間適中(200-300ms)
+- [ ] 不會暈眩
+```
+
+**錯誤處理:**
+```
+測試場景:
+1. 積分不足購買商品 → 應顯示提示
+2. 網路斷線時操作 → 應有錯誤訊息
+3. 無效輸入 → 應有驗證提示
+
+檢查:
+- [ ] 錯誤訊息清楚易懂
+- [ ] 提供解決方案
+- [ ] 不會閃退
+```
+
+---
+
+## ⚡ 第四階段:效能測試
+
+### 4.1 使用Lighthouse (Chrome內建)
+
+**步驟:**
+```
+1. 在Chrome打開你的網站
+2. 按F12(開發者工具)
+3. 點「Lighthouse」標籤
+4. 選擇:
+   - Mode: Navigation
+   - Device: Mobile
+   - Categories: 全選
+5. 點「Analyze page load」
+6. 等待1-2分鐘
+```
+
+**目標分數:**
+```
+Performance (效能):     ≥80分  ⭐⭐⭐⭐
+Accessibility (無障礙):  ≥90分  ⭐⭐⭐⭐⭐
+Best Practices (最佳實踐): ≥90分  ⭐⭐⭐⭐⭐
+SEO (搜尋優化):         ≥80分  ⭐⭐⭐⭐
+PWA (漸進式應用):        ≥90分  ⭐⭐⭐⭐⭐
+```
+
+**如果分數太低:**
+```
+Performance < 80:
+- 壓縮圖片
+- 減少第三方script
+- 啟用快取
+
+PWA < 90:
+- 檢查manifest.json
+- 檢查service worker
+- 確保HTTPS
+```
+
+### 4.2 載入速度測試
+
+**使用 PageSpeed Insights:**
+```
+1. 前往: https://pagespeed.web.dev
+2. 輸入你的網址
+3. 點「分析」
+4. 等待結果
+```
+
+**指標目標:**
+```
+FCP (首次內容繪製):    < 1.8秒
+LCP (最大內容繪製):    < 2.5秒
+CLS (累積版面配置位移): < 0.1
+```
+
+### 4.3 記憶體使用測試
+
+**Chrome效能監控:**
+```
+1. F12 → Performance
+2. 點「Record」
+3. 使用APP 30秒
+4. 點「Stop」
+5. 查看記憶體使用
+
+檢查:
+- [ ] 記憶體穩定(不持續增長)
+- [ ] 無明顯記憶體洩漏
+- [ ] CPU使用率合理(<50%)
+```
+
+---
+
+## 🌐 第五階段:相容性測試
+
+### 5.1 瀏覽器相容性
+
+**必測瀏覽器:**
+
+| 瀏覽器 | 版本 | 測試狀態 |
+|--------|------|---------|
+| Chrome | 最新 | [ ] |
+| Safari | 最新 | [ ] |
+| Firefox | 最新 | [ ] |
+| Edge | 最新 | [ ] |
+| Samsung Browser | 最新 | [ ] |
+
+**測試重點:**
+```
+每個瀏覽器檢查:
+- [ ] 能正常打開
+- [ ] CSS正確顯示
+- [ ] JavaScript正常運作
+- [ ] 能夠安裝(如支援)
+```
+
+### 5.2 作業系統相容性
+
+**測試清單:**
+- [ ] Android 8+
+- [ ] iOS 13+
+- [ ] Windows 10/11
+- [ ] macOS 11+
+- [ ] Chrome OS
+
+### 5.3 螢幕尺寸測試
+
+**使用Chrome DevTools:**
+```
+1. F12 → Toggle device toolbar
+2. 測試各種尺寸:
+   - iPhone SE (375x667)
+   - iPhone 12 Pro (390x844)
+   - iPad (810x1080)
+   - Desktop (1920x1080)
+
+檢查每個尺寸:
+- [ ] 排版正常
+- [ ] 文字可讀
+- [ ] 按鈕可點
+- [ ] 圖片適配
+```
+
+---
+
+## 🐛 第六階段:錯誤處理測試
+
+### 6.1 網路錯誤
+
+**測試場景:**
+
+**A) 網路斷線**
+```
+步驟:
+1. 打開APP
+2. 開啟飛航模式
+3. 嘗試操作
+
+預期:
+- [ ] 顯示「無網路連線」提示
+- [ ] 本地功能仍可用
+- [ ] 不會閃退
+```
+
+**B) 慢速網路**
+```
+步驟:
+1. Chrome DevTools → Network
+2. 選「Slow 3G」
+3. 重新載入頁面
+
+檢查:
+- [ ] 顯示載入動畫
+- [ ] 不會timeout
+- [ ] 最終能載入完成
+```
+
+**C) 服務器錯誤**
+```
+步驟:
+1. 故意輸入錯誤API
+2. 觀察錯誤處理
+
+檢查:
+- [ ] 顯示友善錯誤訊息
+- [ ] 提供重試選項
+- [ ] APP不會崩潰
+```
+
+### 6.2 輸入驗證
+
+**測試各種邊界情況:**
+```
+用戶名輸入:
+- [ ] 空白
+- [ ] 超長(>50字)
+- [ ] 特殊符號
+- [ ] Emoji
+
+積分操作:
+- [ ] 負數
+- [ ] 超大數字
+- [ ] 小數點
+
+時間輸入:
+- [ ] 未來時間
+- [ ] 過去時間
+- [ ] 無效格式
+```
+
+---
+
+## 📊 測試報告模板
+
+### 測試總結表
+
+```
+測試日期: [日期]
+測試人員: [名字]
+APP版本: v1.0.0
+測試設備: [裝置名稱]
+
+功能測試:  ✅ 通過 / ❌ 失敗
+PWA功能:   ✅ 通過 / ❌ 失敗
+UI/UX:     ✅ 通過 / ❌ 失敗
+效能:      ✅ 通過 / ❌ 失敗
+相容性:    ✅ 通過 / ❌ 失敗
+
+Lighthouse分數:
+- Performance: __/100
+- PWA: __/100
+- Accessibility: __/100
+
+發現的問題:
+1. [問題描述]
+2. [問題描述]
+
+建議改進:
+1. [建議]
+2. [建議]
+```
+
+---
+
+## 🎯 上線前最終檢查清單
+
+### 必做項目:
+
+- [ ] 所有核心功能正常運作
+- [ ] 至少在2種設備測試過
+- [ ] Lighthouse PWA分數 >90
+- [ ] 可以成功安裝
+- [ ] 離線基本功能可用
+- [ ] 沒有console錯誤
+- [ ] 圖示正確顯示
+- [ ] APP名稱正確
+- [ ] 聯絡資訊正確
+
+### 建議項目:
+
+- [ ] 有5個以上用戶測試過
+- [ ] 載入時間 <3秒
+- [ ] 在3種不同瀏覽器測試
+- [ ] 有錯誤追蹤系統
+- [ ] 有使用統計分析
+- [ ] 寫好使用文檔
+- [ ] 準備FAQ
+
+---
+
+## 🆘 常見問題除錯
+
+### 問題1: 安裝按鈕不出現
+```
+可能原因:
+- 沒有HTTPS
+- manifest.json錯誤
+- Service Worker未註冊
+
+解決:
+1. 檢查網址是https://
+2. 驗證manifest.json格式
+3. 檢查sw.js是否存在
+```
+
+### 問題2: 離線不能用
+```
+可能原因:
+- Service Worker註冊失敗
+- 快取策略錯誤
+- 網路策略設置問題
+
+解決:
+1. F12 → Application → Service Workers
+2. 檢查狀態是否activated
+3. 檢查Cache Storage有無內容
+```
+
+### 問題3: 圖示不顯示
+```
+可能原因:
+- 圖片路徑錯誤
+- 圖片格式不支援
+- 快取問題
+
+解決:
+1. 檢查 /icons/ 資料夾
+2. 確認PNG格式
+3. 清除快取重試
+```
+
+### 問題4: 效能太差
+```
+可能原因:
+- 圖片太大
+- 太多外部資源
+- JavaScript過於複雜
+
+解決:
+1. 壓縮圖片(<100KB)
+2. 減少CDN依賴
+3. 代碼優化
+```
+
+---
+
+## 📱 用戶測試建議
+
+### 如何收集反饋:
+
+**簡易問卷:**
+```
+1. APP好不好裝? (1-5分)
+2. 載入速度如何? (1-5分)
+3. 介面好不好用? (1-5分)
+4. 有遇到任何問題嗎?
+5. 最喜歡什麼功能?
+6. 希望改進什麼?
+```
+
+**觀察重點:**
+- 用戶安裝過程是否順利
+- 第一次使用有沒有困惑
+- 哪些地方會卡住
+- 哪些功能最常用
+
+---
+
+## ✅ 恭喜!
+
+完成所有測試後,你就有一個:
+- ✅ 經過驗證的PWA
+- ✅ 在多設備運作正常
+- ✅ 效能達標
+- ✅ 用戶體驗良好
+
+**可以正式上線了!** 🎉
+
+---
+
+**文檔版本:** v1.0  
+**最後更新:** 2025-11-02  
+**作者:** Claude for NPMC Team
